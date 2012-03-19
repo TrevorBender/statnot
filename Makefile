@@ -5,7 +5,6 @@ install:
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f statnot ${DESTDIR}${PREFIX}/bin
 	@chmod 755 ${DESTDIR}${PREFIX}/bin/statnot
-	@touch ~/.statusline.sh
 
 uninstall:
 	@echo removing executable file from ${DESTDIR}${PREFIX}/bin

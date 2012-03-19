@@ -48,15 +48,15 @@ DEFAULT_NOTIFY_TIMEOUT = 3000 # milliseconds
 MAX_NOTIFY_TIMEOUT = 5000 # milliseconds
 NOTIFICATION_MAX_LENGTH = 100 # number of characters
 STATUS_UPDATE_INTERVAL = 2.0 # seconds
-STATUS_COMMAND = ["/bin/sh", "%s/.statusline.sh" % os.getenv("HOME")]
+STATUS_COMMAND = ["/bin/sh", "%s/bin/statusline.sh" % os.getenv("HOME")]
 USE_STATUSTEXT=True
 QUEUE_NOTIFICATIONS=True
 
 # dwm
 def update_text(text):
-    # Get first line
-    first_line = text.splitlines()[0] if text else ''
-    subprocess.call(["xsetroot", "-name", first_line])
+    if text:
+        first_line = text.splitlines()[0]
+        subprocess.call(["xsetroot", "-name", first_line])
 
 # ===== CONFIGURATION END =====
 
@@ -140,26 +140,7 @@ def next_notification(pop = False):
             return notification_queue[0]
 
 def get_statustext(notification = ''):
-    output = ''
-    try:
-        if not notification:
-            command = STATUS_COMMAND
-        else:
-            command = STATUS_COMMAND + [notification]
-
-        p = subprocess.Popen(command, stdout=subprocess.PIPE)
-
-        output = p.stdout.read()
-    except:
-        sys.stderr.write("%s: could not read status message (%s)\n"
-                         % (sys.argv[0], ' '.join(STATUS_COMMAND)))
-
-    # Error - STATUS_COMMAND didn't exist or delivered empty result
-    # Fallback to notification only
-    if not output:
-        output = notification
-
-    return output
+    return "NOTIFICATION: %s" % (notification) if notification else ''
 
 def message_thread(dummy):
     last_status_update = 0
@@ -219,13 +200,13 @@ class NotificationFetcher(dbus.service.Object):
     def Notify(self, app_name, notification_id, app_icon,
                summary, body, actions, hints, expire_timeout):
         if (expire_timeout < 0) or (expire_timeout > MAX_NOTIFY_TIMEOUT):
-            expire_timeout = DEFAULT_NOTIFY_TIMEOUT
+            expire_timeout = MAX_NOTIFY_TIMEOUT
 
         if not notification_id:
             self._id += 1
             notification_id = self._id
 
-        text = ("%s %s" % (summary, body)).strip()
+        text = ("%s - %s" % (summary, body)).strip()
         add_notification( [notification_id,
                           text[:NOTIFICATION_MAX_LENGTH],
                           int(expire_timeout) / 1000.0] )
