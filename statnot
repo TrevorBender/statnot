@@ -56,7 +56,8 @@ QUEUE_NOTIFICATIONS=True
 def update_text(text):
     if text:
         first_line = text.splitlines()[0]
-        subprocess.call(["xsetroot", "-name", first_line])
+        subprocess.call(["not",first_line])
+        #subprocess.call(["xsetroot", "-name", first_line])
 
 # ===== CONFIGURATION END =====
 
@@ -140,7 +141,7 @@ def next_notification(pop = False):
             return notification_queue[0]
 
 def get_statustext(notification = ''):
-    return "NOTIFICATION: %s" % (notification) if notification else ''
+    return "%s" % (notification) if notification else ''
 
 def message_thread(dummy):
     last_status_update = 0

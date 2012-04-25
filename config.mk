@@ -2,5 +2,5 @@
 VERSION = "CURVERSION"
 
 # paths
-PREFIX = /usr
+PREFIX = ~
 MANPREFIX = ${PREFIX}/share/man

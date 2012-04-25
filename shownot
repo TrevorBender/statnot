@@ -1,0 +1,12 @@
+#!/bin/sh
+# A script that echos a string representation of all the current notifications
+# as a FIFO queue.
+# ex: "[first][second][third].."
+
+notifyString=""
+notifications=(~/.notifications/*)
+for notify in ${notifications[@]} ; do
+    it=$(cat $notify)
+    notifyString="[$it]$notifyString"
+done
+echo $notifyString
