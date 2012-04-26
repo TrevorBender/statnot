@@ -4,7 +4,7 @@
 # ex: "[first][second][third].."
 
 notifyString=""
-if [ -e ~/.notifications/* ] ; then
+if [ ! -z "$(ls -A ~/.notifications)" ]; then
     declare -a notifications=(~/.notifications/*)
     for notify in "${notifications[@]}" ; do
         it=$(cat $notify)
