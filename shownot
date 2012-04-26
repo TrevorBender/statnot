@@ -3,12 +3,12 @@
 # as a FIFO queue.
 # ex: "[first][second][third].."
 
+# Handle empty globs!
+shopt -s nullglob dotglob
 notifyString=""
-if [ ! -z "$(ls -A ~/.notifications)" ]; then
-    declare -a notifications=(~/.notifications/*)
-    for notify in "${notifications[@]}" ; do
-        it=$(cat $notify)
-        notifyString="[$it]$notifyString"
-    done
-fi
-echo $notifyString
+notifications=(~/.notifications/*)
+for notify in "${notifications[@]}" ; do
+    it=$(cat $notify)
+    notifyString="[$it]$notifyString"
+done
+echo "$notifyString"
