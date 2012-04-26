@@ -2,13 +2,9 @@
 # A script that echos a string representation of all the current notifications
 # as a FIFO queue.
 # ex: "[first][second][third].."
-
-# Handle empty globs!
-shopt -s nullglob dotglob
 notifyString=""
-notifications=(~/.notifications/*)
-for notify in "${notifications[@]}" ; do
-    it=$(cat $notify)
-    notifyString="[$it]$notifyString"
+for notify in ~/.notifications/* ; do
+    [ -f "$notify" ] || continue
+    notifyString="[$(cat $notify)]$notifyString"
 done
 echo "$notifyString"
