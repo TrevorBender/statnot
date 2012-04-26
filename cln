@@ -1,4 +1,4 @@
 #!/bin/sh
 # Clear all the notifications
 
-rm ~/.notifications/*
+rm -f ~/.notifications/*
