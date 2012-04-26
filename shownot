@@ -4,9 +4,11 @@
 # ex: "[first][second][third].."
 
 notifyString=""
-notifications=(~/.notifications/*)
-for notify in ${notifications[@]} ; do
-    it=$(cat $notify)
-    notifyString="[$it]$notifyString"
-done
+if [ -e ~/.notifications/* ] ; then
+    declare -a notifications=(~/.notifications/*)
+    for notify in "${notifications[@]}" ; do
+        it=$(cat $notify)
+        notifyString="[$it]$notifyString"
+    done
+fi
 echo $notifyString
